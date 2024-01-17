@@ -24,12 +24,9 @@ def regression_loss(pred, target):
     """
     label_txy = torch.zeros(pred.shape[0], 2).to('cuda')  # [B, 2]
     pred_input = torch.zeros(pred.shape[0], 2).to('cuda')  # [B, 2]
-    print(pred.shape)
     for i in range(len(target)):
-        print(i)
         idx, ty, tx = target[i]
-        print(idx, ty, tx)
         label_txy[i] = torch.tensor([ty, tx])
-        pred_input[i] = pred[i, int(idx), :]
+        pred_input[i] = pred[i, idx, :]
     loss = F.mse_loss(pred_input, label_txy)
     return loss

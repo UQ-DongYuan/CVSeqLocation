@@ -167,6 +167,13 @@ class TemporalAttentionLayer(nn.Module):
         self.dropout1 = nn.Dropout(dropout)
         self.dropout2 = nn.Dropout(dropout)
 
+        self._reset_parameters()
+
+    def _reset_parameters(self):
+        for p in self.parameters():
+            if p.dim() > 1:
+                nn.init.xavier_uniform_(p)
+
     def forward(self, curt_feat, prev_feat, grd_feat_h, grd_feat_w):
         curt_feat = self.cross_attn(query=self.pos_encoding_curt(curt_feat, grd_feat_h, grd_feat_w),
                                     key=self.pos_encoding_prev(prev_feat, grd_feat_h, grd_feat_w), value=prev_feat)[0]
